@@ -120,3 +120,69 @@ extension ViewController: UIContextMenuInteractionDelegate {
     }
 
 }
+
+
+
+
+
+class ViewControllerNew: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    var pasteBoard = UIPasteboard.general
+    var tableData = ["dog","cat","fish"]
+
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableData.count
+    }
+
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+
+        cell.textLabel?.text = tableData[indexPath.row]
+
+        return cell
+    }
+
+
+    //    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool
+    //    {
+    //        return true
+    //    }
+
+    //    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+    //        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+    //            return true
+    //        }
+    //        return false
+    //    }
+    //
+    //    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+    //        let cell = tableView.cellForRow(at: indexPath)
+    //        pasteBoard.string = cell!.textLabel?.text
+    //    }
+
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let actionProvider: UIContextMenuActionProvider = { _ in
+            let editMenu = UIMenu(title: "Edit...", children: [
+                UIAction(title: "Copy") { _ in },
+                UIAction(title: "Duplicate") { _ in }
+            ])
+            return UIMenu(title: "Title", children: [
+                UIAction(title: "Share") { _ in },
+                editMenu
+            ])
+        }
+
+        return UIContextMenuConfiguration(identifier: "unique-ID" as NSCopying, previewProvider: nil, actionProvider: actionProvider)
+    }
+
+}
+
